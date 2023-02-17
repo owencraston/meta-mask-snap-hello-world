@@ -40,6 +40,16 @@ export const onRpcRequest: OnRpcRequestHandler = ({ origin, request }) => {
           message: 'This is a test native notification',
         },
       });
+    case 'send_confirmation':
+      return snap.request({
+        method: 'snap_confirm',
+        params: [
+          {
+            prompt: 'Test confirmation prompt',
+            description: 'Test confirmation description',
+          },
+        ],
+      });
     default:
       throw new Error('Method not found.');
   }

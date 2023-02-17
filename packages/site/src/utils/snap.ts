@@ -81,4 +81,14 @@ export const sendNativeAppNotification = async () => {
   });
 };
 
+export const sendConfirm = async () => {
+  await window.ethereum.request({
+    method: 'wallet_invokeSnap',
+    params: {
+      snapId: defaultSnapOrigin,
+      request: { method: 'send_confirmation' },
+    },
+  });
+};
+
 export const isLocalSnap = (snapId: string) => snapId.startsWith('local:');

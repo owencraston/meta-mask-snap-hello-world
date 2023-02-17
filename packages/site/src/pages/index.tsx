@@ -4,6 +4,7 @@ import { MetamaskActions, MetaMaskContext } from '../hooks';
 import {
   connectSnap,
   getSnap,
+  sendConfirm,
   sendHello,
   sendInAppNotification,
   sendNativeAppNotification,
@@ -147,6 +148,15 @@ const Index = () => {
     }
   };
 
+  const handleSendConfirm = async () => {
+    try {
+      await sendConfirm();
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: MetamaskActions.SetError, payload: e });
+    }
+  };
+
   return (
     <Container>
       <Heading>
@@ -255,6 +265,27 @@ const Index = () => {
                 onClick={handleNativeAppNotificationClick}
                 disabled={!state.installedSnap}
                 text="Send Notification"
+              />
+            ),
+          }}
+          disabled={!state.installedSnap}
+          fullWidth={
+            state.isFlask &&
+            Boolean(state.installedSnap) &&
+            !shouldDisplayReconnectButton(state.installedSnap)
+          }
+        />
+
+        <Card
+          content={{
+            title: 'Send Hello Confirmation',
+            description:
+              'Display a custom confirmation screen screen in MetaMask.',
+            button: (
+              <SendButton
+                onClick={handleSendConfirm}
+                disabled={!state.installedSnap}
+                text="Send Confirm"
               />
             ),
           }}
