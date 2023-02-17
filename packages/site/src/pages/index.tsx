@@ -5,6 +5,8 @@ import {
   connectSnap,
   getSnap,
   sendHello,
+  sendInAppNotification,
+  sendNativeAppNotification,
   shouldDisplayReconnectButton,
 } from '../utils';
 import {
@@ -13,6 +15,7 @@ import {
   ReconnectButton,
   SendHelloButton,
   Card,
+  SendButton,
 } from '../components';
 
 const Container = styled.div`
@@ -126,6 +129,24 @@ const Index = () => {
     }
   };
 
+  const handleSendInAppNotificationClick = async () => {
+    try {
+      await sendInAppNotification();
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: MetamaskActions.SetError, payload: e });
+    }
+  };
+
+  const handleNativeAppNotificationClick = async () => {
+    try {
+      await sendNativeAppNotification();
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: MetamaskActions.SetError, payload: e });
+    }
+  };
+
   return (
     <Container>
       <Heading>
@@ -192,6 +213,48 @@ const Index = () => {
               <SendHelloButton
                 onClick={handleSendHelloClick}
                 disabled={!state.installedSnap}
+              />
+            ),
+          }}
+          disabled={!state.installedSnap}
+          fullWidth={
+            state.isFlask &&
+            Boolean(state.installedSnap) &&
+            !shouldDisplayReconnectButton(state.installedSnap)
+          }
+        />
+
+        <Card
+          content={{
+            title: 'Send Hello Notification',
+            description:
+              'Display a custom notification within a confirmation screen in MetaMask.',
+            button: (
+              <SendButton
+                onClick={handleSendInAppNotificationClick}
+                disabled={!state.installedSnap}
+                text="Send Notification"
+              />
+            ),
+          }}
+          disabled={!state.installedSnap}
+          fullWidth={
+            state.isFlask &&
+            Boolean(state.installedSnap) &&
+            !shouldDisplayReconnectButton(state.installedSnap)
+          }
+        />
+
+        <Card
+          content={{
+            title: 'Send Hello Native Notification',
+            description:
+              'Display a custom notification within a confirmation screen in MetaMask.',
+            button: (
+              <SendButton
+                onClick={handleNativeAppNotificationClick}
+                disabled={!state.installedSnap}
+                text="Send Notification"
               />
             ),
           }}

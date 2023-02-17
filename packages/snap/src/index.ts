@@ -20,11 +20,24 @@ export const onRpcRequest: OnRpcRequestHandler = ({ origin, request }) => {
           type: 'Confirmation',
           content: panel([
             text(`Hello, **${origin}**!`),
-            text('This custom confirmation is just for display purposes.'),
-            text(
-              'But you can edit the snap source code to make it do something, if you want to!',
-            ),
+            text("Welcome to Owen Craston's test snap"),
           ]),
+        },
+      });
+    case 'inApp_notification':
+      return snap.request({
+        method: 'snap_notify',
+        params: {
+          type: 'inApp',
+          message: 'This is a test in app notification',
+        },
+      });
+    case 'native_notification':
+      return snap.request({
+        method: 'snap_notify',
+        params: {
+          type: 'native',
+          message: 'This is a test native notification',
         },
       });
     default:

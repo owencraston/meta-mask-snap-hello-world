@@ -61,4 +61,24 @@ export const sendHello = async () => {
   });
 };
 
+export const sendInAppNotification = async () => {
+  await window.ethereum.request({
+    method: 'wallet_invokeSnap',
+    params: {
+      snapId: defaultSnapOrigin,
+      request: { method: 'inApp_notification' },
+    },
+  });
+};
+
+export const sendNativeAppNotification = async () => {
+  await window.ethereum.request({
+    method: 'wallet_invokeSnap',
+    params: {
+      snapId: defaultSnapOrigin,
+      request: { method: 'native_notification' },
+    },
+  });
+};
+
 export const isLocalSnap = (snapId: string) => snapId.startsWith('local:');
